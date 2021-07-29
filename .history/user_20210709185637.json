@@ -1,0 +1,20 @@
+[
+  {
+    "fullname": "hyse",
+    "age": 20,
+    "username": "hyse@2021",
+    "password": "abc@123"
+  },
+  {
+    "fullname": "hyse",
+    "age": 20,
+    "username": "hyse@2022",
+    "password": "abc@123"
+  },
+  {
+    "fullname": "hyse academy",
+    "age": 20,
+    "username": "hyse@2020",
+    "password": "abc@123"
+  }
+]
