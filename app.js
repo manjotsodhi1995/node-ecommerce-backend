@@ -108,91 +108,91 @@ app.post("/login", async function(req, res) {
   }
 });
 
-// app.get("/users", async function(req, res) {
-//   const { users } = await connect();
+app.get("/users", async function(req, res) {
+  const { users } = await connect();
 
-//   await users
-//     .find({})
-//     .toArray()
-//     .then(result => {
-//       res.send({
-//         success: true,
-//         message: "User logged in successfully",
-//         data: result
-//       });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.send({
-//         success: true,
-//         message: "User not logged in successfully",
-//         data: err
-//       });
-//     });
-// });
-// app.put("/users/:id", async function(req, res) {
-//   let body = req.body;
-//   let id = req.params.id;
+  await users
+    .find({})
+    .toArray()
+    .then(result => {
+      res.send({
+        success: true,
+        message: "User fetched in successfully",
+        data: result
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.send({
+        success: true,
+        message: "User not fetched in successfully",
+        data: err
+      });
+    });
+});
+app.put("/users/:id", async function(req, res) {
+  let body = req.body;
+  let id = req.params.id;
 
-//   if (!body.username) {
-//     res.send({ msg: "username is missing" });
-//   }
-//   const { users } = await connect();
-//   console.log("Connected to mongodb");
-//   let user = await users.findOne({ _id: ObjectId(id) });
-//   if (!user) res.send({ msg: "user doesn't exist" });
-//   await users
-//     .findOneAndUpdate(
-//       { _id: ObjectId(id) },
-//       { $set: body },
-//       { returnOriginal: true }
-//     )
-//     .then(result => {
-//       res.send({
-//         success: true,
-//         message: "data updated successfully",
-//         data: result
-//       });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.send({
-//         success: true,
-//         message: "User not logged in successfully",
-//         data: err
-//       });
-//     });
-// });
-// app.get("/users/:id", async function(req, res) {
-//   let id = req.params.id;
-//   const { users } = await connect();
-//   console.log("Connected to mongodb");
-//   let user = await users.findOne({ _id: ObjectId(id) });
-//   if (!user) res.send({ msg: "user doesn't exist" });
-//   else {
-//     res.send({
-//       success: true,
-//       message: "user data sent successfully",
-//       data: user
-//     });
-//   }
-// });
-// app.delete("/users/:id", async function(req, res) {
-//   let id = req.params.id;
-//   const { users } = await connect();
-//   console.log("Connected to mongodb");
-//   let user = await users.findOne({ _id: ObjectId(id) });
-//   if (!user) res.send({ msg: "user doesn't exist" });
-//   else {
-//     await users.deleteOne({ _id: ObjectId(id) }).then(result => {
-//       res.send({
-//         success: true,
-//         message: "user deleted successfully",
-//         data: {}
-//       });
-//     });
-//   }
-// });
+  if (!body.username) {
+    res.send({ msg: "username is missing" });
+  }
+  const { users } = await connect();
+  console.log("Connected to mongodb");
+  let user = await users.findOne({ _id: ObjectId(id) });
+  if (!user) res.send({ msg: "user doesn't exist" });
+  await users
+    .findOneAndUpdate(
+      { _id: ObjectId(id) },
+      { $set: body },
+      { returnOriginal: true }
+    )
+    .then(result => {
+      res.send({
+        success: true,
+        message: "data updated successfully",
+        data: result
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.send({
+        success: true,
+        message: "User not logged in successfully",
+        data: err
+      });
+    });
+});
+app.get("/users/:id", async function(req, res) {
+  let id = req.params.id;
+  const { users } = await connect();
+  console.log("Connected to mongodb");
+  let user = await users.findOne({ _id: ObjectId(id) });
+  if (!user) res.send({ msg: "user doesn't exist" });
+  else {
+    res.send({
+      success: true,
+      message: "user data sent successfully",
+      data: user
+    });
+  }
+});
+app.delete("/users/:id", async function(req, res) {
+  let id = req.params.id;
+  const { users } = await connect();
+  console.log("Connected to mongodb");
+  let user = await users.findOne({ _id: ObjectId(id) });
+  if (!user) res.send({ msg: "user doesn't exist" });
+  else {
+    await users.deleteOne({ _id: ObjectId(id) }).then(result => {
+      res.send({
+        success: true,
+        message: "user deleted successfully",
+        data: {}
+      });
+    });
+  }
+});
 
 // app.post("/product/create", async function(req, res) {
 //   let body = req.body;
