@@ -19,21 +19,21 @@ async function connect() {
     users
   };
 }
-// async function connectToProducts() {
-//   await client.connect();
-//   const products = client.db("demo").collection("products");
-//   return {
-//     products
-//   };
-// }
+async function connectToProducts() {
+  await client.connect();
+  const products = client.db("demo").collection("products");
+  return {
+    products
+  };
+}
 
-// async function connectToCart() {
-//   await client.connect();
-//   const cart = client.db("demo").collection("cart");
-//   return {
-//     cart
-//   };
-// }
+async function connectToCart() {
+  await client.connect();
+  const cart = client.db("demo").collection("cart");
+  return {
+    cart
+  };
+}
 
 // //firstname,lastname,username,password
 app.post("/register", async function(req, res) {
@@ -151,7 +151,7 @@ app.put("/users/:id", async function(req, res) {
       res.send({
         success: true,
         message: "data updated successfully",
-        data: result
+        data: result.value
       });
     })
     .catch(err => {
@@ -194,206 +194,206 @@ app.delete("/users/:id", async function(req, res) {
   }
 });
 
-// app.post("/product/create", async function(req, res) {
-//   let body = req.body;
+app.post("/product/create", async function(req, res) {
+  let body = req.body;
 
-//   if (!body.title) {
-//     res.send({ msg: "title is missing" });
-//   }
+  if (!body.title) {
+    res.send({ msg: "title is missing" });
+  }
 
-//   if (!body.brand) {
-//     res.send({ msg: "brand is missing" });
-//   }
+  if (!body.brand) {
+    res.send({ msg: "brand is missing" });
+  }
 
-//   if (!body.price) {
-//     res.send({ msg: "price is missing" });
-//   }
+  if (!body.price) {
+    res.send({ msg: "price is missing" });
+  }
 
-//   if (!body.description) {
-//     res.send({ msg: "description is missing" });
-//   }
+  if (!body.description) {
+    res.send({ msg: "description is missing" });
+  }
 
-//   if (!body.image) {
-//     res.send({ msg: "image is missing" });
-//   }
+  if (!body.image) {
+    res.send({ msg: "image is missing" });
+  }
 
-//   const { products } = await connectToProducts();
-//   console.log("Connected to mongodb");
+  const { products } = await connectToProducts();
+  console.log("Connected to mongodb");
 
-//   if (await products.findOne({ title: body.title })) {
-//     res.send({ msg: "title is already existing" });
-//   } else {
-//     await products
-//       .insertOne(body)
-//       .then(result => {
-//         res.send({
-//           success: true,
-//           message: "Product is added successfully",
-//           data: result.ops[0]
-//         });
-//       })
-//       .catch(err => {
-//         console.log(err);
-//         res.send({
-//           success: false,
-//           message: "Something Went Wrong",
-//           data: {}
-//         });
-//       });
-//   }
-// });
+  if (await products.findOne({ title: body.title })) {
+    res.send({ msg: "title is already existing" });
+  } else {
+    await products
+      .insertOne(body)
+      .then(result => {
+        res.send({
+          success: true,
+          message: "Product is added successfully",
+          data: result.ops[0]
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.send({
+          success: false,
+          message: "Something Went Wrong",
+          data: {}
+        });
+      });
+  }
+});
 
-// app.get("/products", async function(req, res) {
-//   const { products } = await connectToProducts();
+app.get("/products", async function(req, res) {
+  const { products } = await connectToProducts();
 
-//   await products
-//     .find({})
-//     .toArray()
-//     .then(result => {
-//       res.send({
-//         success: true,
-//         message: "Products fetched successfully",
-//         data: result
-//       });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.send({
-//         success: true,
-//         message: "User not logged in successfully",
-//         data: err
-//       });
-//     });
-// });
-// app.put("/product/:id", async function(req, res) {
-//   let body = req.body;
-//   let id = req.params.id;
+  await products
+    .find({})
+    .toArray()
+    .then(result => {
+      res.send({
+        success: true,
+        message: "Products fetched successfully",
+        data: result
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.send({
+        success: true,
+        message: "User not logged in successfully",
+        data: err
+      });
+    });
+});
+app.put("/product/:id", async function(req, res) {
+  let body = req.body;
+  let id = req.params.id;
 
-//   if (!body.title) {
-//     res.send({ msg: "title is missing" });
-//   }
-//   const { products } = await connectToProducts();
-//   console.log("Connected to mongodb");
-//   let product = await products.findOne({ _id: ObjectId(id) });
-//   if (!product) res.send({ msg: "product doesn't exist" });
-//   await products
-//     .findOneAndUpdate(
-//       { _id: ObjectId(id) },
-//       { $set: body },
-//       { returnOriginal: true }
-//     )
-//     .then(result => {
-//       res.send({
-//         success: true,
-//         message: "product data updated successfully",
-//         data: result
-//       });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.send({
-//         success: true,
-//         message: "updation failed",
-//         data: err
-//       });
-//     });
-// });
-// app.get("/", (req, res) => {
-//   res.json({
-//     message: "Application is running "
-//   });
-// });
+  if (!body.title) {
+    res.send({ msg: "title is missing" });
+  }
+  const { products } = await connectToProducts();
+  console.log("Connected to mongodb");
+  let product = await products.findOne({ _id: ObjectId(id) });
+  if (!product) res.send({ msg: "product doesn't exist" });
+  await products
+    .findOneAndUpdate(
+      { _id: ObjectId(id) },
+      { $set: body },
+      { returnOriginal: true }
+    )
+    .then(result => {
+      res.send({
+        success: true,
+        message: "product data updated successfully",
+        data: result
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.send({
+        success: true,
+        message: "updation failed",
+        data: err
+      });
+    });
+});
+app.get("/", (req, res) => {
+  res.json({
+    message: "Application is running "
+  });
+});
 
-// app.get("/cart/:id", async function(req, res) {
-//   const { cart } = await connectToCart();
+app.get("/cart/:id", async function(req, res) {
+  const { cart } = await connectToCart();
 
-//   let id = req.params.id;
-//   console.log("Connected to mongodb");
-//   let cartData = await cart.findOne({ user_id: id });
-//   if (cartData)
-//     res.send({
-//       success: true,
-//       message: "cart data sent successfully",
-//       data: cartData
-//     });
-//   else {
-//     let body = {
-//       user_id: id
-//     };
-//     await cart
-//       .insertOne(body)
-//       .then(result => {
-//         res.send({
-//           success: true,
-//           message: "cart data sent successfully",
-//           data: result.ops[0]
-//         });
-//       })
-//       .catch(err => {
-//         console.log(err);
-//         res.send({
-//           success: false,
-//           message: "Something Went Wrong",
-//           data: {}
-//         });
-//       });
-//   }
-// });
+  let id = req.params.id;
+  console.log("Connected to mongodb");
+  let cartData = await cart.findOne({ user_id: id });
+  if (cartData)
+    res.send({
+      success: true,
+      message: "cart data sent successfully",
+      data: cartData
+    });
+  else {
+    let body = {
+      user_id: id
+    };
+    await cart
+      .insertOne(body)
+      .then(result => {
+        res.send({
+          success: true,
+          message: "cart data sent successfully",
+          data: result.ops[0]
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.send({
+          success: false,
+          message: "Something Went Wrong",
+          data: {}
+        });
+      });
+  }
+});
 
-// app.post("/cart/:id", async function(req, res) {
-//   const { cart } = await connectToCart();
-//   let body = req.body;
-//   let id = req.params.id;
+app.post("/cart/:id", async function(req, res) {
+  const { cart } = await connectToCart();
+  let body = req.body;
+  let id = req.params.id;
 
-//   console.log("Connected to mongodb");
-//   let cartData = await cart.findOne({ _id: ObjectId(id) });
+  console.log("Connected to mongodb");
+  let cartData = await cart.findOne({ _id: ObjectId(id) });
 
-//   if (!cartData) res.send({ msg: "cart doesn't exist" });
-//   else {
-//     let totalCount = 0;
-//     body.forEach(element => {
-//       totalCount += element.quantity;
-//     });
-//     await cart
-//       .findOneAndUpdate(
-//         { _id: ObjectId(id) },
-//         { $set: { products: body, quantity: totalCount } },
-//         { returnOriginal: true }
-//       )
-//       .then(result => {
-//         res.send({
-//           success: true,
-//           message: "cart data sent successfully",
-//           data: result
-//         });
-//       })
-//       .catch(err => {
-//         console.log(err);
-//         res.send({
-//           success: false,
-//           message: "Something Went Wrong",
-//           data: {}
-//         });
-//       });
-//   }
-// });
+  if (!cartData) res.send({ msg: "cart doesn't exist" });
+  else {
+    let totalCount = 0;
+    body.forEach(element => {
+      totalCount += element.quantity;
+    });
+    await cart
+      .findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $set: { products: body, quantity: totalCount } },
+        { returnOriginal: true }
+      )
+      .then(result => {
+        res.send({
+          success: true,
+          message: "cart data sent successfully",
+          data: result
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.send({
+          success: false,
+          message: "Something Went Wrong",
+          data: {}
+        });
+      });
+  }
+});
 
-// app.delete("/cart/:id", async function(req, res) {
-//   let id = req.params.id;
-//   const { cart } = await connectToCart();
-//   console.log("Connected to mongodb");
-//   let cartData = await cart.findOne({ _id: ObjectId(id) });
-//   if (!cartData) res.send({ msg: "user doesn't exist" });
-//   else {
-//     await cart.deleteOne({ _id: ObjectId(id) }).then(result => {
-//       res.send({
-//         success: true,
-//         message: "user deleted successfully",
-//         data: {}
-//       });
-//     });
-//   }
-// });
+app.delete("/cart/:id", async function(req, res) {
+  let id = req.params.id;
+  const { cart } = await connectToCart();
+  console.log("Connected to mongodb");
+  let cartData = await cart.findOne({ _id: ObjectId(id) });
+  if (!cartData) res.send({ msg: "user doesn't exist" });
+  else {
+    await cart.deleteOne({ _id: ObjectId(id) }).then(result => {
+      res.send({
+        success: true,
+        message: "user deleted successfully",
+        data: {}
+      });
+    });
+  }
+});
 
 //start server
 app.listen(3000, () => {
